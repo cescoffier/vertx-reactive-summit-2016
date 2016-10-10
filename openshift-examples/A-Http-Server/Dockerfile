@@ -1,7 +1,8 @@
-FROM java:8u92-jre-alpine
+FROM openjdk:8u102-jre
 
 ENV JAR A-Http-Server-1.0-SNAPSHOT-fat.jar
 ENV APP_HOME /usr/vertx
+ENV OPENSHIFT_KUBE_PING_NAMESPACE vertx-openshift-slides
 
 EXPOSE 8080
 

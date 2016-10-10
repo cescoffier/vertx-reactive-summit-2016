@@ -7,6 +7,7 @@ oc new-project vertx-openshift-slides
 oc policy add-role-to-user view admin -n vertx-openshift-slides
 oc policy add-role-to-group view system:serviceaccounts -n vertx-openshift-slides
 oc policy add-role-to-user view system:serviceaccount:vertx-openshift-slides:default -n vertx-openshift-slides
+oc policy add-role-to-group view system:serviceaccounts -n default
 
 echo "Deploying the slides"
 cd openshift-application-slides

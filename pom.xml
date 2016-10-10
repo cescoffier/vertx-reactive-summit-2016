@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>me.escoffier.vertx</groupId>
+  <artifactId>reactive-summit-2016</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>openshift-application-slides</module>
+    <module>openshift-examples</module>
+  </modules>
+
+  <properties>
+    <vertx.version>3.3.3</vertx.version>
+
+    <main.class>io.vertx.core.Launcher</main.class>
+    <!-- set by children project -->
+    <main.verticle/>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-dependencies</artifactId>
+        <version>${vertx.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-hazelcast</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.4.0</version>
+          <configuration>
+            <executable>java</executable>
+            <arguments>
+              <argument>-Djava.net.preferIPv4Stack=true</argument>
+              <argument>-classpath</argument>
+              <classpath/>
+              <argument>${main.class}</argument>
+              <argument>run</argument>
+              <argument>${main.verticle}</argument>
+              <argument>-cluster</argument>
+              <argument>-cp</argument>
+              <argument>${project.build.directory}/classes</argument>
+            </arguments>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>2.4.3</version>
+          <executions>
+            <execution>
+              <id>launcher</id>
+              <phase>package</phase>
+              <goals>
+                <goal>shade</goal>
+              </goals>
+              <configuration>
+                <transformers>
+                  <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                    <manifestEntries>
+                      <Main-Class>${main.class}</Main-Class>
+                      <Main-Verticle>${main.verticle}</Main-Verticle>
+                    </manifestEntries>
+                  </transformer>
+                  <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                    <resource>META-INF/services/io.vertx.core.spi.VerticleFactory</resource>
+                  </transformer>
+                </transformers>
+                <artifactSet>
+                </artifactSet>
+                <outputFile>${project.build.directory}/${project.artifactId}-${project.version}-fat.jar</outputFile>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>com.github.eirslett</groupId>
+          <artifactId>frontend-maven-plugin</artifactId>
+          <version>0.0.29</version>
+          <executions>
+            <execution>
+              <id>install node and npm</id>
+              <goals>
+                <goal>install-node-and-npm</goal>
+              </goals>
+              <phase>generate-resources</phase>
+            </execution>
+            <execution>
+              <id>npm install</id>
+              <goals>
+                <goal>npm</goal>
+              </goals>
+              <phase>generate-resources</phase>
+              <configuration>
+                <arguments>install</arguments>
+              </configuration>
+            </execution>
+            <execution>
+              <id>grunt build</id>
+              <goals>
+                <goal>grunt</goal>
+              </goals>
+              <phase>generate-resources</phase>
+              <configuration>
+                <srcdir>${project.basedir}/src/main/resources</srcdir>
+                <outputdir>${project.basedir}/src/main/resources</outputdir>
+              </configuration>
+            </execution>
+            <execution>
+              <id>serve</id>
+              <goals>
+                <goal>grunt</goal>
+              </goals>
+              <phase/>
+              <configuration>
+                <arguments>serve</arguments>
+                <srcdir>${project.basedir}/src/main/resources</srcdir>
+                <outputdir>${project.basedir}/src/main/resources</outputdir>
+              </configuration>
+            </execution>
+          </executions>
+          <configuration>
+            <installDirectory>target</installDirectory>
+            <workingDirectory>src/frontend</workingDirectory>
+            <nodeVersion>v5.10.1</nodeVersion>
+            <npmVersion>3.8.5</npmVersion>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+</project>

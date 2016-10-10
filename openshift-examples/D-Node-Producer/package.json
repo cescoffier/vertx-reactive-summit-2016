@@ -1,0 +1,15 @@
+{
+  "name": "node-producer",
+  "version": "0.0.1",
+  "description": "Sending event on the vert.x eventbus",
+  "private": true,
+  "dependencies": {
+    "sockjs-client": "1.0.0",
+    "vertx3-eventbus-client": "3.2.1",
+    "app-config": "0.1.5"
+  },
+  "main": "node-producer.js",
+  "scripts": {
+    "start": "node node-producer.js"
+  }
+}

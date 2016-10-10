@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vert.x - Microservices were never so easy</title>
+
+    <link rel="stylesheet" type="text/css" href="css/redhat/offline-v2.css">
+    <link rel="stylesheet" type="text/css" href="css/redhat/style.css">
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="css/github.css" id="highlightjs">
+</head>
+<body class="reveal-viewport theme-font-overpass2 theme-color-no-color">
+<div class="reveal">
+    <div class="slides">
+        <section class="stack" data-id="4db79b79feeeb859f411b7e55035b327">
+            <section class="has-dark-background" data-background-color="#b21a0f"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="896c342a3f90e055785bbcd7785c248f">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 278px;"
+                     data-block-id="09c8028283aab14b069441d96aa53178">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Reactive Polyglot Microservices with OpenShift and Vert.x</h1>
+
+                        <h3>&nbsp;</h3>
+                        <h3>Clement Escoffier</h3>
+
+                        <p>Vert.x Core Developer, Red Hat</p>
+                    </div>
+                </div>
+                <div class="sl-block" data-block-type="image"
+                     style="width: 360px; height: 122.4px; left: 45px; top: 76.5px;"
+                     data-block-id="f2ac8722d3f29b05ad37dc5128d0c12a">
+                    <div class="sl-block-content" style="z-index: 12;" data-inline-svg="true">
+                        <img data-natural-width="500" data-natural-height="170" style="display: none;"
+                             data-src="title-textpresentation-title/2183129-redhat-logo.svg">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 500 170" height="170" width="500"
+                             class="redhat-logo" preserveaspectratio="xMidYMid meet">
+                            <path class="logotext"
+                                  d="m 495.6,120.6 c 0,1.8 -1.5,3.3 -3.3,3.3 -1.8,0 -3.3,-1.5 -3.3,-3.3 0,-1.8 1.5,-3.3 3.3,-3.3 1.8,0 3.3,1.5 3.3,3.3 z m -3.3,-4 c -2.2,0 -4,1.8 -4,4 0,2.2 1.8,4 4,4 2.2,0 4,-1.8 4,-4 0,-2.2 -1.8,-4 -4,-4 z m 0,3.8 c 0.6,0 1,-0.1 1,-0.7 0,-0.5 -0.4,-0.6 -0.9,-0.6 l -0.8,0 0,1.3 z m -0.7,2.3 -0.6,0 0,-4.1 1.5,0 c 1,0 1.5,0.3 1.5,1.1 0,0.8 -0.5,1.1 -1.1,1.2 l 1.2,1.8 -0.7,0 -1.1,-1.8 -0.7,0 z m -22.2,-64.92 0,11.91 15.4,0 0,4.34 -15.4,0 0,35.17 c 0,6.9 2.2,11.2 8,11.2 2.8,0 4.7,-0.4 6.1,-0.9 l 0.7,4.2 c -1.8,0.7 -4.2,1.3 -7.5,1.3 -3.9,0 -7.2,-1.3 -9.3,-3.9 -2.5,-2.8 -3.3,-7.4 -3.3,-12.9 l 0,-34.17 -9.1,0 0,-4.34 9.1,0 0,-9.94 z m -21.3,32.06 c 0,-9.67 -3,-21.38 -18.6,-21.38 -4.9,0 -10.9,1.32 -15.8,4.67 l 1.7,3.89 c 3.9,-2.76 8.8,-4.03 13.5,-4.03 12.8,-0.1 13.9,10.59 13.9,15.94 l 0,1.44 c -22,-0.23 -33,7.33 -33,19.73 0,7.3 5,14.9 15.9,14.9 8.6,0 14.6,-4.8 16,-6.9 l 2.3,5.7 4.9,0 c -0.6,-4.2 -0.8,-8.6 -0.8,-12.9 z m -5.3,16.66 c 0,0.9 -0.2,2.1 -0.6,3.2 -1.8,5.3 -7,10.9 -16,10.9 -5.6,0 -10.7,-3.5 -10.7,-11.3 0,-13 15.5,-14.77 27.3,-14.43 z m -42.7,-15.34 0,32.64 -5.3,0 0,-32.05 c 0,-9.74 -3.8,-18.62 -14.9,-18.62 -7.7,0 -14,5.52 -16.3,12.25 -0.6,1.6 -0.8,3.13 -0.8,5.33 l 0,33.09 -5.3,0 0,-71.31 5.3,1.58 0,25.29 0.3,0 c 1.5,-3.01 4.1,-5.92 7.3,-7.8 3.1,-1.91 6.8,-3.1 10.9,-3.1 5.2,0 18.8,2.56 18.8,22.7 z m -68.5,1.09 c 0,-1.09 -0.1,-2.46 -0.3,-3.57 -1.3,-5.26 -5.7,-9.59 -11.8,-9.59 -8.8,0 -13.7,7.76 -13.7,17.81 0,9.9 4.9,17.2 13.5,17.2 5.6,0 10.5,-3.9 11.8,-9.8 0.4,-1.2 0.5,-2.5 0.5,-3.9 z M 202.9,87.1 c 0,-7.23 -0.1,-12.55 -0.4,-17.36 l 11.8,0 0.5,10.26 0.4,0 c 2.7,-7.6 9,-11.48 14.8,-11.48 1.4,0 2.1,0 3.2,0.29 l 0,12.87 c -1.3,-0.25 -2.4,-0.38 -4.1,-0.38 -6.5,0 -11,4.14 -12.2,10.33 -0.3,1.2 -0.4,2.65 -0.4,4.17 l 0,28 -13.7,0 z m 142.3,21.5 c 0,5.6 0.2,11.5 0.5,15.2 l -12.2,0 -0.6,-8.6 -0.3,0 c -3.2,6.1 -9.7,9.8 -17.5,9.8 -12.9,0 -23.1,-11 -23.1,-27.6 -0.1,-18.13 11.2,-28.88 24.2,-28.88 7.4,0 12.7,3.05 15.1,7.04 l 0.3,0 0,-30.48 13.6,3.85 z m -59.3,-8.1 c 0.2,-1.2 0.5,-3.3 0.5,-5.8 0,-11.83 -5.8,-26.28 -23.3,-26.28 -17.4,0 -26.5,14.11 -26.5,28.98 0,16.6 10.3,27.4 27.9,27.4 7.8,0 14.2,-1.4 18.8,-3.4 l -2,-9.4 c -4.1,1.5 -8.6,2.5 -14.9,2.5 -8.7,0 -16.3,-4.3 -16.7,-14.1 z m -36.2,-9.58 c 0.6,-5.54 4.1,-13.17 12.5,-13.17 9.2,0 11.3,8.16 11.3,13.17 z m -83.8,29.68 c 0,1.8 -1.4,3.3 -3.2,3.3 -1.8,0 -3.3,-1.5 -3.3,-3.3 0,-1.8 1.5,-3.3 3.3,-3.3 1.8,0 3.2,1.5 3.2,3.3 z m -3.2,-4 c -2.2,0 -4,1.8 -4,4 0,2.2 1.8,4 4,4 2.2,0 4,-1.8 4,-4 0,-2.2 -1.8,-4 -4,-4 z m 0,3.8 c 0.5,0 1,-0.1 1,-0.7 0,-0.5 -0.5,-0.6 -0.9,-0.6 l -0.9,0 0,1.3 z m -0.8,2.3 -0.6,0 0,-4.1 1.6,0 c 0.9,0 1.4,0.3 1.4,1.1 0,0.8 -0.4,1.1 -1,1.2 l 1.1,1.8 -0.7,0 -1,-1.8 -0.8,0 z"></path>
+                            <path style="fill:#fff"
+                                  d="M150.1 125c-3.1-.7-6.3-1.1-9.5-1.1-5.6 0-10.8.8-14.4 2.5-.8.4-.8.9-.6 1.6.4 1.3-.3 2.7-3.9 3.5-5.4 1.2-8.8 6.7-10.7 8.6-2.3 2.1-8.8 3.5-7.8 2.2.8-1 3.7-4.2 5.4-7.6 1.6-3 3-3.9 4.9-6.8.6-.8 2.8-3.8 3.4-6.2.8-2.3.5-5.2.8-6.4.4-1.7 2-5.4 2.1-7.5.1-1.2-4.9 1.7-7.3 1.7-2.4 0-4.8-1.5-6.9-1.6-2.7-.1-4.4 2.1-6.74 1.7-1.37-.2-2.52-1.4-4.9-1.5-3.4-.2-7.57 1.9-15.38 1.6-7.68-.2-14.77-9.7-15.74-11.2-1.13-1.8-2.52-1.8-4.03-.4-1.5 1.4-3.36.3-3.9-.6-1-1.8-3.7-6.92-7.87-8-5.77-1.5-8.7 3.2-8.3 6.9.38 3.8 2.83 4.9 3.96 6.9 1.12 2 1.7 3.3 3.84 4.2 1.5.6 2.07 1.6 1.62 2.8-.4 1.1-1.97 1.3-3 1.4-2.2.1-3.74-.5-4.86-1.2-1.3-.9-2.37-2-3.5-4-1.33-2.2-3.4-3.1-5.83-3.1-1.16 0-2.24.3-3.2.8-3.8 2-8.3 3.1-13.17 3.1H9.1C19.64 138.5 49.14 161 83.88 161c27.73 0 52.13-14.3 66.23-36"></path>
+                            <path style="fill:#000"
+                                  d="m 150.1,125 c -2.6,-0.6 -6.3,-1.1 -9.5,-1.1 -5.6,0 -10.7,0.9 -14.4,2.5 -0.5,0.2 -0.7,0.6 -0.7,1.1 0,0.2 0,0.4 0.1,0.5 0.4,1.3 -0.3,2.7 -3.9,3.5 -5.4,1.2 -8.8,6.7 -10.7,8.6 -2.3,2.1 -8.8,3.5 -7.8,2.2 0.8,-1 3.7,-4.2 5.4,-7.6 1.6,-3 3,-3.9 4.9,-6.8 0.6,-0.8 2.8,-3.8 3.4,-6.2 0.8,-2.3 0.5,-5.2 0.8,-6.4 0.4,-1.7 2,-5.4 2.1,-7.5 0.1,-1.2 -4.9,1.7 -7.3,1.7 -2.4,0 -4.8,-1.5 -6.9,-1.6 -2.6,-0.1 -4.3,2.1 -6.74,1.7 -1.36,-0.2 -2.51,-1.4 -4.9,-1.5 -3.41,-0.1 -7.56,1.9 -15.37,1.6 -7.68,-0.2 -14.78,-9.7 -15.75,-11.2 -1.13,-1.8 -2.52,-1.8 -4.03,-0.4 -1.51,1.4 -3.37,0.3 -3.9,-0.6 -1.01,-1.8 -3.7,-6.92 -7.87,-8 -5.77,-1.5 -8.69,3.19 -8.31,6.9 0.38,3.8 2.83,4.9 3.96,6.9 1.14,2 1.72,3.3 3.85,4.2 1.51,0.6 2.07,1.6 1.62,2.8 -0.39,1.1 -1.96,1.3 -3,1.4 -2.2,0.1 -3.74,-0.5 -4.86,-1.2 -1.31,-0.9 -2.37,-2 -3.51,-4 -1.32,-2.2 -3.4,-3.1 -5.82,-3.1 -1.15,0 -2.23,0.3 -3.19,0.8 -3.8,2 -8.31,3.1 -13.18,3.1 l -5.481,0 C 6.45,99.4 5,90.95 5,82.13 5,38.57 40.32,3.26 83.88,3.262 c 43.52,0 78.82,35.31 78.82,78.87 0,15.77 -4.6,30.57 -12.6,42.87 z m -49.2,-7.2 c -1.03,1.2 -1.47,1.6 -2.21,2.2 -1.78,1.4 -3.81,-0.2 -5.11,-1 -2.9,-1.7 -5.23,-0.6 -5.8,0.7 -0.57,1.3 0.1,2.9 1.64,2.7 2.21,-0.3 2.31,0.1 3.9,1.1 2.98,1.9 5.15,0.8 6.26,-0.1 0.92,-0.7 1.42,-1.3 1.92,-2.2 0.9,-1.7 0.2,-3 -0.3,-3.4 -0.1,-0.1 -0.2,-0.1 -0.3,0 z"></path>
+                            <path style="fill:#c00"
+                                  d="m 87.26,25.76 c 3.86,-0.47 10.35,-1.28 10.82,1.61 0.18,1.13 -1.98,2.32 -5.13,3.05 -0.34,0.1 -0.33,0.54 0,0.67 1.32,0.38 2.86,0.65 4.49,0.65 5.06,0.12 9.16,-1.71 9.26,-4.07 0.1,-2.36 -4,-4.39 -9.04,-4.49 -0.99,0 -1.98,0 -3.09,0.15 -3.02,0.3 -5.62,1.1 -7.42,1.98 -0.29,0.14 -0.28,0.45 0.11,0.45 z m -9.53,15.06 c 4.35,-0.32 4.79,-1.32 4.66,-2.39 -0.14,-1.25 -2.77,-2.71 -6.67,-2.71 -3.84,0 -6.6,0.46 -8.99,0.56 -2.39,0.1 -4.24,-1.69 -5.1,-2.76 -0.71,-0.88 -2.97,-1.73 -4.2,1.1 -1.24,2.86 1.07,5.93 2.97,6.33 0,0 3.17,5.89 5.57,3.33 1.71,-1.82 2.65,-2.8 11.76,-3.46 z m 43.87,28.83 c 2.9,-1.57 5.5,-3.63 6.8,-8.5 13.4,3.02 21.3,10 19.6,19.43 C 144.2,101.3 110.3,108.3 77.23,98.3 45.75,88.79 18.11,69.8 21.31,58.68 c 1.86,-6.48 12.13,-9.24 25.82,-7.76 -2.08,4.23 -1.92,9.21 7.14,14.75 11.07,6.29 29.79,11.66 34.85,11.14 1.89,-0.2 3.58,-1.13 1.89,-2.27 -1.7,-1.13 -3.21,-3.4 -4.16,-7.36 C 86.33,64.97 85.73,61.89 73.83,59.63 48.31,54.77 49.29,47.55 50.05,43.4 c 0,0 2.26,-10.19 3.21,-13.78 0.94,-3.59 3.38,-11.82 19.82,-8.12 9.5,2.14 14.62,-0.52 17.24,-1.19 7.1,-1.82 14.98,-0.57 19.28,3.9 4.5,4.63 10.7,18.9 13.7,29.57 1.5,5.42 1.1,8.02 0.3,9.85 -0.5,1.25 -0.8,2.05 -2.7,5.22 -0.3,0.56 -0.1,1.17 0.7,0.8 z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section>
+            <!-- section title -->
+            <section class="has-dark-background" data-background-color="#94140a"
+                     data-background-image="title-textpresentation-title/1574736-corporate-1.svg"
+                     data-id="03823dd33e0dd503545c45635e1abe87">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 880px; left: 40px; top: 261px;"
+                     data-block-id="02c953fbbd72449daff3023684040e0f">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: center; font-size: 149%;">
+                        <h1>vert.x</h1>
+                        <h2>In 10 slides...</h2>
+                    </div>
+                </div>
+            </section>
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 28%;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h2>
+                            <strong>Vert.x</strong> is a <strong>toolkit</strong> to build <strong>distributed</strong>
+                            and
+                            <strong>reactive</strong> systems on top of the <strong>JVM</strong> using an
+                            <strong>asynchronous non-blocking</strong> development model.
+                        </h2>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Toolkit</h1>
+                        <ul>
+                            <li>Vert.x is a plain boring <strong>jar</strong></li>
+                            <li>Your application depends on this set of jars (classpath, <em>fat-jar</em>, ...)</li>
+                        </ul>
+                        <img src="img/toolkit-jars.png" width="80%">
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Distributed</h1>
+
+                        <blockquote>
+                            You know you have a distributed system when the crash of a computer you've never
+                            heards of stops you from getting any work done.
+                            (Leslie Lamport)
+                        </blockquote>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Reactive</h1>
+
+                        <p>Reactive systems are</p>
+                        <ul>
+                            <li><strong>Responsive</strong> - they respond in an <em>acceptable</em> time</li>
+                            <li><strong>Elastic</strong> - they scale up and down</li>
+                            <li><strong>Resilient</strong> - they are designed to handle failures <em>gracefully</em>
+                            </li>
+                            <li><strong>Asynchronous</strong> - they interact using async messages</li>
+                        </ul>
+                        <br/>
+                        <br/>
+                        <p><a href="http://www.reactivemanifesto.org/">http://www.reactivemanifesto.org/</a></p>
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Polyglot</h1>
+
+                        <pre><code class="hljs java">
+vertx.createHttpServer()
+  .requestHandler(req -> req.response().end("Hello Java"))
+  .listen(8080);
+                </code></pre>
+
+                        <pre><code class="hljs groovy">
+vertx.createHttpServer()
+    .requestHandler({ req -> req.response().end("Hello Groovy") })
+    .listen(8080)
+                </code></pre>
+
+                        <pre><code class="hljs javascript">
+vertx.createHttpServer()
+    .requestHandler(function (req) {
+        req.response().end("Hello JavaScript")
+    })
+    .listen(8080);
+                </code></pre>
+
+                        <pre class="fragment"><code class="hljs scala">
+vertx.createHttpServer()
+      .requestHandler(req => req.response().end("Hello Scala"))
+      .listen(8080)
+                </code></pre>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section>
+            <section class="has-dark-background" data-background-color="#94140a"
+                     data-background-image="title-textpresentation-title/1574736-corporate-1.svg"
+                     data-id="03823dd33e0dd503545c45635e1abe87">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 880px; left: 40px; top: 261px;"
+                     data-block-id="02c953fbbd72449daff3023684040e0f">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: center; font-size: 149%;">
+                        <h1>Microservices</h1>
+                        <h2>Rebranding distributed applications</h2>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Microservices</h1>
+
+                        <blockquote>
+                            The microservice <strong>architectural style</strong> is an approach to developing a single
+                            application as <strong>a suite of small services</strong>, each running in its own process
+                            and
+                            communicating with <strong>lightweight mechanisms</strong>, often an HTTP resource API.
+
+                            These services are built around business capabilities and <strong>independently
+                            deployable</strong> by fully automated deployment machinery. There is
+                            a <strong>bare minimum of centralized management</strong> of these services, which may be
+                            written in different programming languages and use different data storage technologies.
+                            (Martin Fowler)
+                        </blockquote>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>A suite of independent services:</h1>
+
+                        <p>Each service runs in its own process</p>
+                        <ul>
+                            <li>So they are <strong>distributed applications</strong></li>
+                        </ul>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <p>Lightweight interactions - Loose-coupling</p>
+                        <ul>
+                            <li><strong>Not only HTTP</strong></li>
+                            <li>Messaging</li>
+                            <li>Streams</li>
+                            <li>(async) RPC</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>A suite of independent services:</h1>
+
+                        <p>Independently developed, tested and deployed</p>
+                        <ul>
+                            <li>Automated process</li>
+                            <li>(Liskov) substitutability</li>
+                            <li>It's all about <strong>agility</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>No Free Lunch</h1>
+                        <img src="img/microservices-circles.png" width="80%"/>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Vert.x &amp; Microservices</h1>
+                        <p>We wont' build <em>regular</em> microservices, but <strong>reactive</strong> microservices
+                        </p>
+                        <ul>
+                            <li><strong>Responsive</strong> - fast, is able to handle a large number of events /
+                                connections
+                            </li>
+                            <li><strong>Elastic</strong> - scale up and down by just starting and stopping nodes,
+                                round-robin
+                            </li>
+                            <li><strong>Resilient</strong> - failure as first-class citizen, fail-over</li>
+                            <li><strong>Asynchronous message-passing</strong> - asynchronous and non-blocking
+                                development model
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Pick your own development model</h1>
+
+                        <pre><code class="hljs java">
+vertx.createHttpServer()
+    .requestHandler(request -> {
+      doA("Austin", ar -> {
+        doB("Reactive Summit", ar2 -> {
+          request.response().end(ar.result() + "\n" + ar2.result());
+        });
+      });
+    }).listen(8080);
+                </code></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Pick your own development model</h1>
+
+                        <pre><code class="hljs java">
+vertx.createHttpServer()
+    .requestHandler(request -> {
+      Future&lt;String&gt; a = doA("Austin");
+      Future&lt;String&gt; b = doB("Reactive Summit");
+      CompositeFuture.all(a, b).setHandler(ar -> {
+        request.response().end(a.result() + "\n" + b.result());
+      });
+    }).listen(8080);
+                </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Pick your own development model</h1>
+
+                        <pre><code class="hljs java">
+vertx.createHttpServer()
+    .requestHandler(request -> {
+      CompletableFuture&lt;String&gt; a = doA("Austin");
+      CompletableFuture&lt;String&gt; b = doB("Reactive Summit");
+      CompletableFuture.allOf(a, b).thenRun(() -> {
+        request.response().end(a.join() + "\n" + b.join());
+      });
+    }).listen(8080);
+                </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Pick your own development model</h1>
+
+                        <pre><code class="hljs java">
+HttpServer server = vertx.createHttpServer();
+server.requestStream().toObservable()
+    .subscribe(req -> {
+      Observable&lt;String&gt; a = doA("Austin");
+      Observable&lt;String&gt; b = doB("Reactive Summit");
+      Observable.zip(a, b, (s1, s2) -> s1 + "\n" + s2)
+          .subscribe(s -> req.response().end(s));
+    });
+server.listen(8080);
+                </code></pre>
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>What does Vert.x provide to build microservices?</h1>
+
+                        <ul>
+                            <li>TCP, UDP, HTTP 1 & 2 servers and clients</li>
+                            <li>(non-blocking) DNS client</li>
+                            <li>Event bus (messaging)</li>
+                            <li>Distributed data structures</li>
+                            <li>Load-balancing</li>
+                            <li>Fail-over</li>
+                            <li>Service discovery</li>
+                            <li>Failure management, Circuit-breaker</li>
+                            <li>Shell, Metrics, Deployment support</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+
+        <section>
+            <section class="has-dark-background" data-background-color="#94140a"
+                     data-background-image="title-textpresentation-title/1574736-corporate-1.svg"
+                     data-id="03823dd33e0dd503545c45635e1abe87">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 880px; left: 40px; top: 261px;"
+                     data-block-id="02c953fbbd72449daff3023684040e0f">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: center; font-size: 149%;">
+                        <h1>HTTP &amp; REST</h1>
+                        <h2>Because it always begin with a rest</h2>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Vert.x Hello World</h1>
+                        <pre><code class="hljs java">
+vertx.createHttpServer()
+  .requestHandler(request -> {
+    // Handler receiving requests
+    request.response().end("World !");
+  })
+  .listen(8080, ar -> {
+    // Handler receiving start sequence completion (AsyncResult)
+    if (ar.succeeded()) {
+      System.out.println("Server started on port "
+        + ar.result().actualPort());
+    } else {
+      ar.cause().printStackTrace();
+    }
+  });
+                </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Vert.x Hello World</h1>
+
+                        <div class="button" id="http-hello-world-btn">Invoke</div>
+
+                        <div>
+                    <pre><code class="hljs" style="padding: 15px;
+  height: 170px; overflow: hidden; font-size: xx-large" data-trim id="http-hello-world-result"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h2>Event loop<strong>s</strong></h2>
+                        <img src="img/event-loop-2.png" width="90%">
+                    </div>
+                </div>
+            </section>
+
+
+            <!--<section class="has-light-background" data-background-color="#fafafa"-->
+            <!--data-background-image="title-textpresentation-title/1748213-drawing2.svg"-->
+            <!--data-id="8ebbf624c8a3877f011f5e5ed93c3362">-->
+            <!--<div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"-->
+            <!--data-block-id="d5885db0e2cc905d730992f70c865965">-->
+            <!--<div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"-->
+            <!--style="z-index: 11; text-align: left;">-->
+            <!--<h1>Vert.x Web - Modern Web Application</h1>-->
+
+            <!--<img src="img/vertx-web.png" width="90%">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</section>-->
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Vert.x Async HTTP Client</h1>
+
+                        <pre><code class="hljs java">
+HttpClient client = vertx.createHttpClient(
+        new HttpClientOptions()
+                    .setDefaultHost(host)
+                    .setDefaultPort(port));
+
+client.getNow("/", response -> {
+  // Handler receiving the response
+
+  // Get the content
+  response.bodyHandler(buffer -> {
+    // Handler to read the content
+  });
+});
+</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Service Discovery</h1>
+
+                        <p>Locate the services, environment-agnostic</p>
+                        <img src="img/service-discovery.png" width="80%">
+
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Service Discovery - Kubernetes</h1>
+
+                        <p>No need for publication - Import Kubernetes services</p>
+
+                        <pre><code class="hljs java">
+HttpEndpoint.getClient(discovery,
+    new JsonObject().put("name", "vertx-http-server"),
+    result -> {
+        if (result.failed()) {
+          rc.response().end("D'oh no matching service");
+          return;
+        }
+        HttpClient client = result.result();
+        client.getNow("/", response -> {
+          response.bodyHandler(buffer -> {
+            rc.response().end("Hello " + buffer.toString());
+          });
+        });
+      });
+</code></pre>
+
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Chained HTTP requests</h1>
+
+                        <img src="img/arch-http-chain.png" width="90%">
+
+                        <div class="button" id="http-chained-hello-world-btn">Invoke</div>
+                        <div>
+                    <pre><code class="hljs" style="padding: 15px;
+  height: 170px; overflow: hidden; font-size: xx-large" data-trim id="http-chained-hello-world-result"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!--<section class="has-light-background" data-background-color="#fafafa"-->
+            <!--data-background-image="title-textpresentation-title/1748213-drawing2.svg"-->
+            <!--data-id="8ebbf624c8a3877f011f5e5ed93c3362">-->
+            <!--<div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"-->
+            <!--data-block-id="d5885db0e2cc905d730992f70c865965">-->
+            <!--<div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"-->
+            <!--style="z-index: 11; text-align: left;">-->
+            <!--<h1>Interacting with blocking systems</h1>-->
+
+            <!--<img src="img/blocking-executeBlocking.png" width="90%">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</section>-->
+
+            <!--<section class="has-light-background" data-background-color="#fafafa"-->
+            <!--data-background-image="title-textpresentation-title/1748213-drawing2.svg"-->
+            <!--data-id="8ebbf624c8a3877f011f5e5ed93c3362">-->
+            <!--<div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"-->
+            <!--data-block-id="d5885db0e2cc905d730992f70c865965">-->
+            <!--<div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"-->
+            <!--style="z-index: 11; text-align: left;">-->
+            <!--<h1>Interacting with blocking systems</h1>-->
+
+            <!--<img src="img/blocking-data-access.png" width="90%">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</section>-->
+        </section>
+
+        <section>
+
+            <section class="has-dark-background" data-background-color="#94140a"
+                     data-background-image="title-textpresentation-title/1574736-corporate-1.svg"
+                     data-id="03823dd33e0dd503545c45635e1abe87">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 880px; left: 40px; top: 261px;"
+                     data-block-id="02c953fbbd72449daff3023684040e0f">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: center; font-size: 149%;">
+                        <h1>Messaging with the event bus</h1>
+                        <h2>the spine of Vert.x applications</h2>
+                    </div>
+                </div>
+            </section>
+
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>The event bus</h1>
+
+                        <p>The event bus is the <strong>nervous system</strong> of vert.x:</p>
+                        <ul>
+                            <li>Allows different components to communicate regardless</li>
+                            <ul>
+                                <li>the implementation language and their location</li>
+                                <li>whether they run on vert.x or not (using bridges)</li>
+                            </ul>
+                            <br/>
+                            <li><strong>Address</strong>: Messages are sent to an address</li>
+                            <li><strong>Handler</strong>: Messages are received in handlers.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Point to Point</h1>
+                        <img src="img/eventbus-p2p.png" width="70%">
+                        <pre><code class="hljs java" data-noescape data-trim>
+vertx.eventBus().send("address", "message");
+vertx.eventBus().consumer("address", message -> {});
+                </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Publish / Subscribe</h1>
+                        <img src="img/eventbus-pub-sub.png" width="70%">
+                        <pre><code class="hljs java" data-noescape data-trim>
+vertx.eventBus().publish("address", "message");
+vertx.eventBus().consumer("address", message -> {});</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Request / Response</h1>
+                        <img src="img/eventbus-rr.png" width="65%">
+                        <pre><code class="hljs java" data-noescape data-trim>
+vertx.eventBus().send("address", "message", reply -> {});
+vertx.eventBus().consumer("address",
+    message -> { message.reply("response"); });
+                </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Distributed event bus</h1>
+                        <p>Almost anything can send and receive messages</p>
+                        <img src="img/eventbus-clustered.png" width="80%">
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Distributed event bus</h1>
+                        <p>Let's have a java (Vert.x) app, and a node app sending data just here:</p>
+
+                        <div>
+                            <pre><code class="hljs eventbus" style="padding: 15px; height: 250px; overflow: hidden;"
+                                       data-trim id="eventbus-bridge-content"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Distributed event bus</h1>
+                        <img src="img/eventbus-bridges.png" width="60%">
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Eventbus clients and bridges</h1>
+
+                        <p class="left">Bridges</p>
+                        <ul class="left">
+                            <li>SockJS: browser, node.js</li>
+                            <li>TCP: languages / systems able to open a TCP socket</li>
+                            <li>Stomp</li>
+                            <li>AMQP</li>
+                            <li>Camel</li>
+                        </ul>
+
+                        <br/>
+                        <br/>
+
+                        <p class="left">Clients:</p>
+                        <ul class="left">
+                            <li>Go, C#, C, Python, Swift...</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section>
+            <section class="has-dark-background" data-background-color="#94140a"
+                     data-background-image="title-textpresentation-title/1574736-corporate-1.svg"
+                     data-id="03823dd33e0dd503545c45635e1abe87">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 880px; left: 40px; top: 261px;"
+                     data-block-id="02c953fbbd72449daff3023684040e0f">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: center; font-size: 149%;">
+                        <h1>Reliability patterns</h1>
+                        <h2>Don't be fool, be prepared to <strong>FAIL</strong></h2>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Reliability</h1>
+                        <br/>
+                        <p>It's not about being bug-free or bullet proof,<br/>it's <strong>impossible</strong>.</p>
+                        <br/>
+                        <p>It's about being prepared to fail,<br/>and handling these <strong>failures</strong>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Managing failures</h1>
+                        <p>Distributed communication may fail</p>
+                        <pre><code class="hljs java" data-trim data-noescape="">
+vertx.eventbus().send(..., ...,
+  <mark>new DeliveryOptions().setSendTimeout(1000),</mark>
+  reply -> {
+    if (reply.failed()) {
+      System.out.println("D'oh, he did not reply to me !");
+    } else {
+      System.out.println("Got a mail " + reply.result().body());
+    }
+});</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Managing failures</h1>
+                        <img src="img/eventbus-request-reply-demo.png" width="70%">
+                        <br/>
+                        <div id="request-reply" class="button">Invoke</div>
+                        <div>
+                    <pre><code class="hljs eventbus" style="padding: 15px;
+  height: 150px; overflow: hidden;" data-trim id="request-reply-result"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Circuit Breaker</h1>
+
+                        <img src="img/circuit-breaker.png" width="80%"/>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Circuit Breaker</h1>
+
+                        <pre><code class="hljs java" data-trim data-noescape="">
+cb.executeWithFallback(future -> {
+  // Async operation
+  client.get("/", response -> {
+    response.bodyHandler(buffer -> {
+      future.complete("Hello " + buffer.toString());
+    });
+  })
+    .exceptionHandler(future::fail)
+    .end();
+  },
+
+  // Fallback
+  t -> "Sorry... " + t.getMessage() + " (" + cb.state() + ")"
+)
+  // Handler called when the operation has completed
+  .setHandler(content -> /* ... */);
+</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text"
+                     style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Circuit Breaker</h1>
+                        <img src="img/arch-http-chain.png" width="50%">
+                        <div id="failure-chain-cb-btn" class="button">Invoke</div>
+                        <div>
+                    <pre><code class="hljs" style="padding: 15px;
+  height: 170px; overflow: hidden;" data-trim id="failure-chain-cb-result"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section>
+            <section class="has-dark-background" data-background-color="#94140a"
+                     data-background-image="title-textpresentation-title/1574736-corporate-1.svg"
+                     data-id="03823dd33e0dd503545c45635e1abe87">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 880px; left: 40px; top: 261px;"
+                     data-block-id="02c953fbbd72449daff3023684040e0f">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: center; font-size: 149%;">
+                        <h1>Scalability patterns</h1>
+                        <h2>Be prepared to be famous</h2>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h2>Elasticity patterns</h2>
+                        <img src="img/scalability.png" width="90%"/>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Balancing the load</h1>
+                        <p>When several consumers listen to the same address, Vert.x dispatches the
+                            <strong>sent</strong>
+                            messages using a round robin.</p>
+
+                        <p>So, to improve the scalability, just spawn a new node!</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Balancing the load</h1>
+
+                        <img src="img/load-balancing-eventbus.png" width="80%"/>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Balancing the load</h1>
+
+                        <div id="load-balancing-btn" class="button">Invoke</div>
+                        <div>
+                    <pre><code class="hljs" style="padding: 15px;
+  height: 170px; overflow: hidden;" data-trim id="load-balancing-result"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>Scaling HTTP</h1>
+
+                        <img src="img/scaling-http.png" width="90%">
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section>
+            <section class="has-dark-background" data-background-color="#94140a"
+                     data-background-image="title-textpresentation-title/1574736-corporate-1.svg"
+                     data-id="03823dd33e0dd503545c45635e1abe87">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 880px; left: 40px; top: 261px;"
+                     data-block-id="02c953fbbd72449daff3023684040e0f">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: center; font-size: 149%;">
+                        <h1>This is not the <code>end()</code></h1>
+                        <h3>But the first step on the reactive microservice road</h3>
+                    </div>
+                </div>
+            </section>
+
+            <section
+                    class="has-light-background" data-background-color="#fafafa"
+                    data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                    data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                    </div>
+                    <img src="img/microservice-openshift.png" width="90%">
+                </div>
+            </section>
+
+            <section
+                    class="has-light-background" data-background-color="#fafafa"
+                    data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                    data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                    </div>
+                    <img src="img/wordcloud.png" width="90%">
+                </div>
+            </section>
+
+            <section class="has-light-background" data-background-color="#fafafa"
+                     data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                     data-id="8ebbf624c8a3877f011f5e5ed93c3362">
+                <div class="sl-block" data-block-type="text" style="height: auto; width: 915px; left: 45px; top: 70px;"
+                     data-block-id="d5885db0e2cc905d730992f70c865965">
+                    <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                         style="z-index: 11; text-align: left;">
+                        <h1>How to start ?</h1>
+
+                        <ul>
+                            <li>https://www.openshift.org</li>
+                        </ul>
+
+                        <br/>
+                        <br/>
+
+                        <ul>
+                            <li>http://vertx.io</li>
+                            <li>http://vertx.io/blog/posts/introduction-to-vertx.html</li>
+                            <li>http://escoffier.me/vertx-hol</li>
+                        </ul>
+
+                        <br/>
+                        <br/>
+                        <ul>
+                            <li>Secure Enclaves For Reactive Cloud Applications</li>
+                        </ul>
+                        <img src="img/jax.png" width="80%"/>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+        <!-- final slide -->
+        <section class="in-3d-appear has-dark-background" data-background-color="#b21a0f"
+                 data-background-image="title-textpresentation-title/1748213-drawing2.svg"
+                 data-id="4236b9382e7195a9f2a92396584a543d">
+
+
+            <div style="position:relative !important; width: 880px; height: 320px; margin-left:40px; ">
+                <svg class="closing-logo logotype" width="494" height="180" viewbox="0 0 494 180"
+                     style="position:absolute; top:190px; bottom: 0%; height: 50%; width: 50%; left:0: right:0;">
+                    <g>
+                        <path class="logotext" style="fill:white"
+                              d="M488.326 115.346c-1.816 0-3.281 1.469-3.281 3.284 0 1.809 1.465 3.271 3.281 3.271 1.81 0 3.277-1.461 3.277-3.271 0-1.815-1.468-3.284-3.277-3.284zm3.989 3.281c0 2.197-1.788 3.983-3.989 3.983-2.196 0-3.986-1.786-3.986-3.983 0-2.201 1.79-3.987 3.986-3.987 2.201 0 3.989 1.786 3.989 3.987m-4.716-.255v-1.262h.838c.424 0 .887.095.887.596 0 .626-.464.666-.989.666h-.736zm0 .525h.711l1.071 1.76h.693l-1.16-1.796c.604-.073 1.059-.388 1.059-1.113 0-.809-.481-1.158-1.439-1.158h-1.552v4.067h.618v-1.76m-22.172-63.12v11.917h15.415v4.338h-15.415v35.149c0 6.877 2.135 11.185 7.944 11.185 2.788 0 4.759-.366 6.145-.847l.647 4.142c-1.746.732-4.199 1.3-7.464 1.3-3.946 0-7.219-1.243-9.331-3.835-2.449-2.841-3.286-7.38-3.286-12.897v-34.197h-9.126v-4.338h9.126v-9.944l5.345-1.973m-26.645 37.095c-11.776-.339-27.325 1.445-27.325 14.429 0 7.771 5.13 11.265 10.764 11.265 9.011 0 14.135-5.58 16.001-10.843.389-1.154.56-2.313.56-3.24v-11.61zm5.346 16.059c0 4.276.172 8.704.789 12.845h-4.928l-.785-7.749h-.255c-2.619 4.167-8.645 8.979-17.241 8.979-10.881 0-15.944-7.652-15.944-14.863 0-12.483 11.018-20.002 33.017-19.77v-1.445c0-5.35-1.04-16.02-13.832-15.936-4.732 0-9.662 1.266-13.575 4.029l-1.702-3.89c4.94-3.349 10.974-4.673 15.865-4.673 15.605 0 18.591 11.715 18.591 21.378v21.095m-66.784-42.473c-4.115 0-7.801 1.187-10.899 3.098-3.215 1.883-5.831 4.79-7.388 7.8h-.216v-25.289l-5.35-1.58v71.289h5.35v-33.071c0-2.197.168-3.721.728-5.327 2.311-6.727 8.65-12.247 16.311-12.247 11.071 0 14.904 8.878 14.904 18.616v32.03h5.346v-32.62c0-20.142-13.66-22.699-18.786-22.699m-36.127-19.525l-13.656-3.852v30.478h-.225c-2.416-3.992-7.745-7.039-15.141-7.039-12.994 0-24.308 10.752-24.226 28.857 0 16.609 10.22 27.613 23.124 27.613 7.799 0 14.316-3.716 17.545-9.769h.244l.613 8.556h12.174c-.251-3.673-.45-9.624-.45-15.155v-59.689zm-13.656 51.413c0 1.432-.101 2.766-.414 3.986-1.376 5.913-6.211 9.724-11.799 9.724-8.602 0-13.526-7.252-13.526-17.18 0-10.026 4.88-17.785 13.681-17.785 6.144 0 10.541 4.331 11.75 9.594.233 1.107.307 2.472.307 3.564v8.097m-58.078-9.429c.063-5.007-2.116-13.166-11.268-13.166-8.412 0-11.909 7.631-12.521 13.166h23.789zm-23.762 9.518c.361 9.791 7.94 14.075 16.69 14.075 6.282 0 10.78-.984 14.911-2.502l2.021 9.399c-4.621 1.963-11.04 3.427-18.883 3.427-17.546 0-27.824-10.835-27.824-27.392 0-14.913 9.046-29.026 26.426-29.026 17.57 0 23.289 14.451 23.289 26.279 0 2.539-.226 4.578-.486 5.837l-36.145-.099m-46.773-13.329c0-7.234-.15-12.554-.443-17.366h11.831l.506 10.264h.388c2.659-7.607 8.96-11.484 14.793-11.484 1.334 0 2.111.05 3.204.295v12.87c-1.278-.251-2.473-.388-4.116-.388-6.51 0-11.027 4.142-12.248 10.335-.23 1.204-.354 2.65-.354 4.122v28.022h-13.671l.11-36.67m-40.274 30.239c-1.816 0-3.281 1.469-3.281 3.284 0 1.809 1.465 3.271 3.281 3.271 1.81 0 3.277-1.461 3.277-3.271 0-1.815-1.468-3.284-3.277-3.284zm3.989 3.281c0 2.197-1.788 3.983-3.989 3.983-2.196 0-3.986-1.786-3.986-3.983 0-2.201 1.79-3.987 3.986-3.987 2.201 0 3.989 1.786 3.989 3.987m-4.716-.255v-1.262h.838c.424 0 .887.095.887.596 0 .626-.464.666-.989.666h-.736zm0 .525h.711l1.071 1.76h.693l-1.16-1.796c.604-.073 1.059-.388 1.059-1.113 0-.809-.481-1.158-1.439-1.158h-1.552v4.067h.618v-1.76"></path>
+                    </g>
+                </svg>
+                <svg class="closing-logo icon" width="494" height="180" viewbox="0 0 494 180"
+                     preserveaspectratio="xMminYmin meet"
+                     style="position:absolute; top:190px;width: 50%;  bottom: 0%; height: 50%; left:0: right:0;">
+                    <g>
+                        <path class="face" style="fill:white"
+                              d="M146.083 123.002c-3.04-.697-6.264-1.138-9.526-1.138-5.579 0-10.655.965-14.398 2.527-.413.204-.706.636-.706 1.125 0 .181.045.361.113.515.443 1.281-.284 2.671-3.908 3.469-5.372 1.181-8.764 6.725-10.704 8.565-2.279 2.165-8.716 3.493-7.747 2.203.758-1.006 3.654-4.154 5.416-7.553 1.576-3.04 2.979-3.904 4.912-6.805.566-.848 2.765-3.837 3.405-6.201.718-2.305.476-5.203.751-6.393.396-1.721 2.018-5.451 2.14-7.556.071-1.193-4.974 1.7-7.367 1.7-2.392 0-4.724-1.436-6.862-1.538-2.647-.122-4.347 2.043-6.742 1.664-1.366-.219-2.518-1.425-4.908-1.513-3.402-.124-7.56 1.892-15.368 1.641-7.68-.251-14.775-9.708-15.743-11.212-1.135-1.763-2.521-1.763-4.03-.375-1.513 1.384-3.375.295-3.905-.635-1.007-1.76-3.701-6.912-7.873-7.993-5.769-1.495-8.69 3.193-8.31 6.925.385 3.788 2.833 4.85 3.967 6.863 1.132 2.015 1.712 3.312 3.846 4.203 1.511.634 2.074 1.564 1.625 2.807-.395 1.08-1.968 1.327-3.002 1.378-2.198.105-3.739-.492-4.862-1.208-1.307-.836-2.37-1.992-3.51-3.955-1.32-2.168-3.398-3.113-5.82-3.113-1.154 0-2.234.304-3.193.798-3.794 1.978-8.312 3.144-13.175 3.144l-5.484.005c10.518 31.194 40.013 53.656 74.756 53.656 27.752 0 52.156-14.331 66.214-36.001"></path>
+                        <path class="black-circle" style="fill:black"
+                              d="M97.244 115.77c.405.394 1.105 1.728.249 3.416-.479.896-.995 1.524-1.917 2.261-1.109.891-3.278 1.917-6.253.032-1.597-1.015-1.696-1.356-3.903-1.071-1.578.207-2.205-1.384-1.639-2.71.568-1.318 2.899-2.389 5.795-.69 1.304.764 3.335 2.384 5.115.95.737-.591 1.178-.984 2.201-2.17.089-.116.266-.104.352-.017zm48.843 7.234c-3.04-.702-6.264-1.138-9.526-1.138-5.579 0-10.655.968-14.398 2.522-.413.208-.706.637-.706 1.129 0 .177.045.363.113.512.443 1.284-.284 2.676-3.908 3.471-5.372 1.181-8.764 6.723-10.704 8.566-2.279 2.161-8.716 3.494-7.747 2.204.758-1.009 3.654-4.156 5.416-7.556 1.576-3.037 2.979-3.903 4.912-6.801.566-.852 2.765-3.84 3.405-6.202.718-2.309.476-5.202.751-6.396.396-1.717 2.018-5.449 2.14-7.554.071-1.19-4.974 1.697-7.367 1.697-2.392 0-4.724-1.429-6.862-1.533-2.647-.127-4.347 2.04-6.742 1.662-1.366-.219-2.518-1.421-4.908-1.511-3.402-.126-7.56 1.89-15.368 1.638-7.68-.247-14.775-9.704-15.743-11.207-1.135-1.766-2.521-1.766-4.03-.377-1.513 1.38-3.375.294-3.905-.634-1.007-1.763-3.701-6.917-7.873-7.996-5.769-1.498-8.69 3.193-8.31 6.924.385 3.787 2.833 4.849 3.967 6.862 1.132 2.015 1.712 3.319 3.846 4.21 1.511.626 2.074 1.562 1.625 2.803-.395 1.081-1.968 1.328-3.002 1.378-2.198.103-3.739-.492-4.862-1.212-1.307-.83-2.37-1.987-3.51-3.953-1.32-2.168-3.398-3.111-5.82-3.111-1.154 0-2.234.306-3.193.798-3.794 1.974-8.312 3.146-13.175 3.146h-5.484c-2.669-7.915-4.116-16.395-4.116-25.212 0-43.562 35.313-78.871 78.873-78.871 43.561 0 78.87 35.31 78.87 78.871 0 15.808-4.649 30.526-12.656 42.872"></path>
+                        <path class="hat" style="fill:#c00"
+                              d="M124.38 59.146c-.781 2.621-1.888 5.971-6.82 8.502-.719.369-.993-.235-.662-.802 1.864-3.17 2.195-3.962 2.737-5.212.758-1.829 1.155-4.43-.352-9.854-2.966-10.674-9.154-24.942-13.652-29.571-4.34-4.468-12.206-5.724-19.314-3.9-2.618.671-7.741 3.335-17.239 1.196-16.441-3.703-18.876 4.529-19.817 8.113-.946 3.589-3.21 13.78-3.21 13.78-.756 4.153-1.744 11.37 23.782 16.233 11.893 2.264 12.496 5.337 13.022 7.548.945 3.961 2.453 6.229 4.152 7.362 1.698 1.135 0 2.073-1.885 2.265-5.065.526-23.783-4.843-34.856-11.135-9.061-5.537-9.212-10.522-7.138-14.751-13.685-1.48-23.957 1.282-25.818 7.762-3.196 11.118 24.444 30.111 55.919 39.642 33.031 10 67.004 3.018 70.781-17.744 1.712-9.432-6.231-16.41-19.63-19.432zm-41.116-35.382c-.385.051-.406-.312-.111-.456 1.795-.875 4.401-1.675 7.417-1.982 1.106-.109 2.1-.163 3.091-.145 5.056.093 9.102 2.125 9.043 4.486-.06 2.366-4.205 4.19-9.262 4.077-1.636-.039-3.172-.275-4.495-.656-.155-.041-.269-.174-.269-.331 0-.158.114-.294.273-.334 3.154-.73 5.282-1.921 5.132-3.049-.198-1.494-4.323-2.306-9.215-1.816-.536.056-1.327.17-1.604.206zm-9.53 15.051c-9.11.66-10.056 1.644-11.762 3.461-2.406 2.563-5.576-3.325-5.576-3.325-1.901-.4-4.207-3.468-2.964-6.332 1.226-2.831 3.49-1.982 4.199-1.101.862 1.074 2.705 2.831 5.096 2.767 2.391-.063 5.15-.565 8.998-.565 3.898 0 6.521 1.456 6.668 2.707.127 1.068-.316 2.074-4.658 2.388"></path>
+                    </g>
+                </svg>
+            </div>
+            <div class="sl-block" data-block-type="text"
+                 style="height: auto; width: 403px; left: 557px; top: 251px;"
+                 data-block-id="1a145394e8b26bf7fce72d76a48a205b">
+                <div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"
+                     style="z-index: 14; text-align: left; font-size: 88%;">
+                    <h1>THANK YOU!</h1>
+                </div>
+            </div>
+            <div class="sl-block" data-block-type="shape"
+                 style="width: 4px; height: 214px; left: 511px; top: 171px;"
+                 data-block-id="9482a21f293fbe058bb14f3755d8733b">
+                <div class="sl-block-content" data-shape-type="rect" data-shape-fill-color="rgb(255, 255, 255)"
+                     data-shape-stretch="true" style="z-index: 15;">
+                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%"
+                         preserveaspectratio="none" viewbox="0 0 4 214">
+                        <rect width="4" height="214" class="shape-element" fill="rgb(255, 255, 255)"></rect>
+                    </svg>
+                </div>
+            </div>
+            <div class="sl-block" data-block-type="image"
+                 style="width: 39px; height: 39px; left: 173px; top: 457px;"
+                 data-block-id="01fc04ab42304dba9b5d43bf89483555">
+                <div class="sl-block-content" style="z-index: 16;" data-inline-svg="true">
+                    <!--<img data-natural-width="256" data-natural-height="256" style="display: none;"-->
+                    <!--data-src="title-textpresentation-title/1839695-Linkedin_icon.svg">-->
+                    <!--<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 256 256" height="256px" width="256px"-->
+                    <!--preserveaspectratio="xMidYMid meet">-->
+                    <!--<path d="m 45.98,10.51 c -19.6,0 -35.48,15.88 -35.48,35.48 l 0,164.01 c 0,19.6 15.88,35.5 35.48,35.5 l 164.02,0 c 19.6,0 35.5,-15.9 35.5,-35.5 l 0,-164.01 c 0,-19.6 -15.9,-35.48 -35.5,-35.48 l -164.02,0 z m 18.2,39.8 c 12.08,0 19.52,7.93 19.75,18.36 0,10.2 -7.67,18.36 -19.98,18.36 l -0.23,0 C 51.86,87.03 44.2,78.87 44.2,68.67 44.2,58.24 52.09,50.31 64.18,50.31 Z M 168.3,99.04 c 23.2,0 40.7,15.16 40.7,47.76 l 0,61 -35.3,0 0,-56.9 c 0,-14.3 -5.2,-24 -17.9,-24 -9.8,0 -15.6,6.5 -18.2,12.9 -0.9,2.3 -1.1,5.4 -1.1,8.6 l 0,59.4 -35.3,0 c 0,0 0.4,-96.3 0,-106.3 l 35.3,0 0,15 c 4.7,-7.2 13.1,-17.46 31.8,-17.46 z m -122.01,2.46 35.31,0 0,106.3 -35.31,0 0,-106.3 z"></path>-->
+                    <!--</svg>-->
+                    <img src="img/email.png" height="256px" width="256px" viewbox="0 0 256 256"/>
+                </div>
+            </div>
+            <div class="sl-block" data-block-type="snippet"
+                 style="width: 354px; height: 48px; left: 163px; top: 452px;"
+                 data-block-id="2e459002fbb0f33bee3b4581d65bd288">
+                <div class="sl-block-content" data-has-custom-html="" style="z-index: 21;"><a
+                        style=" text-decoration:none; font-weight: 500; border:none; box-shadow: none; text-shadow: 0 .1em .25em rgba(0,0,0,0.1) ; min-width: 12em;font-size:.5em; letter-spacing:.031em; padding:.66666em 4em ; color:#fff !important"
+                        href="" target="_blank">&nbsp; &nbsp; &nbsp;clement.escoffier@redhat.com</a>
+                </div>
+            </div>
+            <div class="sl-block" data-block-type="image"
+                 style="width: 35px; height: 28.4884px; left: 571px; top: 463px;"
+                 data-block-id="acc67906eb5614f3449907f1f9219966">
+                <div class="sl-block-content" style="z-index: 18;" data-inline-svg="true">
+                    <img data-natural-width="172" data-natural-height="140" style="display: none;"
+                         data-src="title-textpresentation-title/1551975-twitter.svg">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 171.51 139.38" height="139.38"
+                         width="171.51"
+                         preserveaspectratio="xMidYMid meet">
+
+                        <path d="m 164.13,21.079 c -5.77,2.559 -11.98,4.287 -18.47,5.063 6.63,-3.984 11.73,-10.281 14.13,-17.7933 C 153.58,12.032 146.7,14.709 139.37,16.153 133.51,9.9024 125.16,6 115.9,6 98.148,6 83.74,20.394 83.74,38.151 c 0,2.522 0.284,4.981 0.841,7.329 C 57.85,44.137 34.161,31.342 18.296,11.886 c -2.769,4.743 -4.35,10.272 -4.35,16.166 0,11.15 5.675,20.993 14.302,26.759 -5.273,-0.164 -10.226,-1.608 -14.567,-4.021 0,0.137 0,0.274 0,0.411 0,15.573 11.085,28.569 25.79,31.53 -2.696,0.731 -5.538,1.124 -8.472,1.124 -2.065,0 -4.085,-0.201 -6.05,-0.576 4.095,12.777 15.975,22.071 30.04,22.341 -11.003,8.61 -24.867,13.76 -39.937,13.76 -2.596,0 -5.1545,-0.16 -7.6677,-0.45 14.2297,9.12 31.1367,14.45 49.2957,14.45 59.15,0 91.49,-49.004 91.49,-91.5 0,-1.389 0,-2.779 -0.1,-4.159 6.28,-4.532 11.73,-10.199 16.05,-16.642 z"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="sl-block" data-block-type="snippet"
+                 style="width: 299px; height: 48px; left: 569px; top: 452px;"
+                 data-block-id="f077c759931e82cb6eff74cbb4440344">
+                <div class="sl-block-content" data-has-custom-html="" style="z-index: 0;">
+                    <p><a href="https://twitter.com/clementplop"
+                          style="text-decoration:none; font-weight: 500; border:none;
+                            box-shadow: none;
+                            text-shadow: 0 .1em .25em rgba(0,0,0,0.1) ; min-width: 12em;font-size:.5em;
+                            letter-spacing:.031em; padding:.66666em 4em ; color:#fff !important"
+                          target="_blank">
+                        @clementplop</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+    </div>
+    <div id="theme-html-output">
+        <svg xmlns="http://www.w3.org/2000/svg" class="triangle-element" viewbox="0 0 70.5 70.5"
+             preserveaspectratio="xMaxYMax meet"
+             style="top: 80%; position:absolute; bottom:0; right:0; left: 68%; top: 68%; height: 32%; width: 32%; user-select:none; z-index:1;">
+
+            <path d="m 70.5,16 +0,55.5  -55.5,0 z" style="fill:#cc0000; stroke:none;"></path>
+
+            <g transform="translate(0,0)">
+                <path style="fill:none;stroke:#c00;stroke-width:0.2;stroke-linecap:square;" class="pattern"
+                      d="M34 52v-2h2m-3 3v-4h4m-5 5v-6h6m-10-6v2h-2m3-3v4h-4m5-5v6h-6m10-4h2v2h-2zm-1-1h4v4h-4zm-1-1h6v6h-6zm-4 10h-2v2h2zm-3-1h4v4h-4zm5 5v-6h-6v6zm12-10v-2h2m-3 3v-4h4m-5 5v-6h6m-10-6v2h-2m3-3v4h-4m5-5v6h-6m10-2v-2h2v2zm-1-3h4v4h-4zm5 5h-6v-6h6zM18 52h2v-2m-3 3h4v-4m-5 5h6v-6m38-22h-2v2m-8-8h2v-2m-3 3h4v-4m-5 5h6v-6m-4 10h2v2h-2zm-1-1h4v4h-4zm-1-1h6v6h-6zm10-4v-2h2v2zm-6 14h-2v2m3-3h-4v4m5-5h-6v6m-6-10h2v-2m-3 3h4v-4m-5 5h6v-6m14-14v2h-2m13 3H55v16H39v16H23v16H7v8M71 7h-8v16H47v16H31v16H15v16m13-13h-2v2m3-3h-4v4m5-5h-6v6m-6-4h2v2h-2zm-1-1h4v4h-4zm-1-1h6v6h-6zm4 10h-2v2m3-3h-4v4m5-5h-6v6m-6-10h2v-2m-3 3h4v-4m-5 5h6v-6m-2 10h-2v2h2zm-3-1h4v4H9zm-1-1h6v6H8zm53-39h-4v4m5-5h-6v6m1-13h4v4h-4zm-1-1h6v6h-6zm10 4v-2h2m-3 3v-4h4m-5 5v-6h6m-9-7v4h-4m5-5v6h-6m10-4h2v2h-2zm-1-1h4v4h-4zm-1-1h6v6h-6zm4-6v2h-2m3-3v4h-4m5-5v6h-6M4 66v2H2m3-3v4H1m5-5v6H0"></path>
+            </g>
+        </svg>
+
+
+        <svg class="triangle-element" viewbox="0 0 494 494" preserveaspectratio="xMaxYMax meet"
+             style="top: 80%; position:absolute; bottom:0; right:0; left: 72%; top: 72%; height: 28%; width: 28%; user-select:none; z-index:1;">
+
+            <g transform="translate(210,360) scale(.53) ">
+                <path style="fill:#fff" class="logotext"
+                      d="m 495.6,120.6 c 0,1.8 -1.5,3.3 -3.3,3.3 -1.8,0 -3.3,-1.5 -3.3,-3.3 0,-1.8 1.5,-3.3 3.3,-3.3 1.8,0 3.3,1.5 3.3,3.3 z m -3.3,-4 c -2.2,0 -4,1.8 -4,4 0,2.2 1.8,4 4,4 2.2,0 4,-1.8 4,-4 0,-2.2 -1.8,-4 -4,-4 z m 0,3.8 c 0.6,0 1,-0.1 1,-0.7 0,-0.5 -0.4,-0.6 -0.9,-0.6 l -0.8,0 0,1.3 z m -0.7,2.3 -0.6,0 0,-4.1 1.5,0 c 1,0 1.5,0.3 1.5,1.1 0,0.8 -0.5,1.1 -1.1,1.2 l 1.2,1.8 -0.7,0 -1.1,-1.8 -0.7,0 z m -22.2,-64.92 0,11.91 15.4,0 0,4.34 -15.4,0 0,35.17 c 0,6.9 2.2,11.2 8,11.2 2.8,0 4.7,-0.4 6.1,-0.9 l 0.7,4.2 c -1.8,0.7 -4.2,1.3 -7.5,1.3 -3.9,0 -7.2,-1.3 -9.3,-3.9 -2.5,-2.8 -3.3,-7.4 -3.3,-12.9 l 0,-34.17 -9.1,0 0,-4.34 9.1,0 0,-9.94 z m -21.3,32.06 c 0,-9.67 -3,-21.38 -18.6,-21.38 -4.9,0 -10.9,1.32 -15.8,4.67 l 1.7,3.89 c 3.9,-2.76 8.8,-4.03 13.5,-4.03 12.8,-0.1 13.9,10.59 13.9,15.94 l 0,1.44 c -22,-0.23 -33,7.33 -33,19.73 0,7.3 5,14.9 15.9,14.9 8.6,0 14.6,-4.8 16,-6.9 l 2.3,5.7 4.9,0 c -0.6,-4.2 -0.8,-8.6 -0.8,-12.9 z m -5.3,16.66 c 0,0.9 -0.2,2.1 -0.6,3.2 -1.8,5.3 -7,10.9 -16,10.9 -5.6,0 -10.7,-3.5 -10.7,-11.3 0,-13 15.5,-14.77 27.3,-14.43 z m -42.7,-15.34 0,32.64 -5.3,0 0,-32.05 c 0,-9.74 -3.8,-18.62 -14.9,-18.62 -7.7,0 -14,5.52 -16.3,12.25 -0.6,1.6 -0.8,3.13 -0.8,5.33 l 0,33.09 -5.3,0 0,-71.31 5.3,1.58 0,25.29 0.3,0 c 1.5,-3.01 4.1,-5.92 7.3,-7.8 3.1,-1.91 6.8,-3.1 10.9,-3.1 5.2,0 18.8,2.56 18.8,22.7 z m -68.5,1.09 c 0,-1.09 -0.1,-2.46 -0.3,-3.57 -1.3,-5.26 -5.7,-9.59 -11.8,-9.59 -8.8,0 -13.7,7.76 -13.7,17.81 0,9.9 4.9,17.2 13.5,17.2 5.6,0 10.5,-3.9 11.8,-9.8 0.4,-1.2 0.5,-2.5 0.5,-3.9 z M 202.9,87.1 c 0,-7.23 -0.1,-12.55 -0.4,-17.36 l 11.8,0 0.5,10.26 0.4,0 c 2.7,-7.6 9,-11.48 14.8,-11.48 1.4,0 2.1,0 3.2,0.29 l 0,12.87 c -1.3,-0.25 -2.4,-0.38 -4.1,-0.38 -6.5,0 -11,4.14 -12.2,10.33 -0.3,1.2 -0.4,2.65 -0.4,4.17 l 0,28 -13.7,0 z m 142.3,21.5 c 0,5.6 0.2,11.5 0.5,15.2 l -12.2,0 -0.6,-8.6 -0.3,0 c -3.2,6.1 -9.7,9.8 -17.5,9.8 -12.9,0 -23.1,-11 -23.1,-27.6 -0.1,-18.13 11.2,-28.88 24.2,-28.88 7.4,0 12.7,3.05 15.1,7.04 l 0.3,0 0,-30.48 13.6,3.85 z m -59.3,-8.1 c 0.2,-1.2 0.5,-3.3 0.5,-5.8 0,-11.83 -5.8,-26.28 -23.3,-26.28 -17.4,0 -26.5,14.11 -26.5,28.98 0,16.6 10.3,27.4 27.9,27.4 7.8,0 14.2,-1.4 18.8,-3.4 l -2,-9.4 c -4.1,1.5 -8.6,2.5 -14.9,2.5 -8.7,0 -16.3,-4.3 -16.7,-14.1 z m -36.2,-9.58 c 0.6,-5.54 4.1,-13.17 12.5,-13.17 9.2,0 11.3,8.16 11.3,13.17 z m -83.8,29.68 c 0,1.8 -1.4,3.3 -3.2,3.3 -1.8,0 -3.3,-1.5 -3.3,-3.3 0,-1.8 1.5,-3.3 3.3,-3.3 1.8,0 3.2,1.5 3.2,3.3 z m -3.2,-4 c -2.2,0 -4,1.8 -4,4 0,2.2 1.8,4 4,4 2.2,0 4,-1.8 4,-4 0,-2.2 -1.8,-4 -4,-4 z m 0,3.8 c 0.5,0 1,-0.1 1,-0.7 0,-0.5 -0.5,-0.6 -0.9,-0.6 l -0.9,0 0,1.3 z m -0.8,2.3 -0.6,0 0,-4.1 1.6,0 c 0.9,0 1.4,0.3 1.4,1.1 0,0.8 -0.4,1.1 -1,1.2 l 1.1,1.8 -0.7,0 -1,-1.8 -0.8,0 z"></path>
+                <path style="fill:#fff"
+                      d="M150.1 125c-3.1-.7-6.3-1.1-9.5-1.1-5.6 0-10.8.8-14.4 2.5-.8.4-.8.9-.6 1.6.4 1.3-.3 2.7-3.9 3.5-5.4 1.2-8.8 6.7-10.7 8.6-2.3 2.1-8.8 3.5-7.8 2.2.8-1 3.7-4.2 5.4-7.6 1.6-3 3-3.9 4.9-6.8.6-.8 2.8-3.8 3.4-6.2.8-2.3.5-5.2.8-6.4.4-1.7 2-5.4 2.1-7.5.1-1.2-4.9 1.7-7.3 1.7-2.4 0-4.8-1.5-6.9-1.6-2.7-.1-4.4 2.1-6.74 1.7-1.37-.2-2.52-1.4-4.9-1.5-3.4-.2-7.57 1.9-15.38 1.6-7.68-.2-14.77-9.7-15.74-11.2-1.13-1.8-2.52-1.8-4.03-.4-1.5 1.4-3.36.3-3.9-.6-1-1.8-3.7-6.92-7.87-8-5.77-1.5-8.7 3.2-8.3 6.9.38 3.8 2.83 4.9 3.96 6.9 1.12 2 1.7 3.3 3.84 4.2 1.5.6 2.07 1.6 1.62 2.8-.4 1.1-1.97 1.3-3 1.4-2.2.1-3.74-.5-4.86-1.2-1.3-.9-2.37-2-3.5-4-1.33-2.2-3.4-3.1-5.83-3.1-1.16 0-2.24.3-3.2.8-3.8 2-8.3 3.1-13.17 3.1H9.1C19.64 138.5 49.14 161 83.88 161c27.73 0 52.13-14.3 66.23-36"></path>
+                <path style="fill:#000"
+                      d="m 150.1,125 c -2.6,-0.6 -6.3,-1.1 -9.5,-1.1 -5.6,0 -10.7,0.9 -14.4,2.5 -0.5,0.2 -0.7,0.6 -0.7,1.1 0,0.2 0,0.4 0.1,0.5 0.4,1.3 -0.3,2.7 -3.9,3.5 -5.4,1.2 -8.8,6.7 -10.7,8.6 -2.3,2.1 -8.8,3.5 -7.8,2.2 0.8,-1 3.7,-4.2 5.4,-7.6 1.6,-3 3,-3.9 4.9,-6.8 0.6,-0.8 2.8,-3.8 3.4,-6.2 0.8,-2.3 0.5,-5.2 0.8,-6.4 0.4,-1.7 2,-5.4 2.1,-7.5 0.1,-1.2 -4.9,1.7 -7.3,1.7 -2.4,0 -4.8,-1.5 -6.9,-1.6 -2.6,-0.1 -4.3,2.1 -6.74,1.7 -1.36,-0.2 -2.51,-1.4 -4.9,-1.5 -3.41,-0.1 -7.56,1.9 -15.37,1.6 -7.68,-0.2 -14.78,-9.7 -15.75,-11.2 -1.13,-1.8 -2.52,-1.8 -4.03,-0.4 -1.51,1.4 -3.37,0.3 -3.9,-0.6 -1.01,-1.8 -3.7,-6.92 -7.87,-8 -5.77,-1.5 -8.69,3.19 -8.31,6.9 0.38,3.8 2.83,4.9 3.96,6.9 1.14,2 1.72,3.3 3.85,4.2 1.51,0.6 2.07,1.6 1.62,2.8 -0.39,1.1 -1.96,1.3 -3,1.4 -2.2,0.1 -3.74,-0.5 -4.86,-1.2 -1.31,-0.9 -2.37,-2 -3.51,-4 -1.32,-2.2 -3.4,-3.1 -5.82,-3.1 -1.15,0 -2.23,0.3 -3.19,0.8 -3.8,2 -8.31,3.1 -13.18,3.1 l -5.481,0 C 6.45,99.4 5,90.95 5,82.13 5,38.57 40.32,3.26 83.88,3.262 c 43.52,0 78.82,35.31 78.82,78.87 0,15.77 -4.6,30.57 -12.6,42.87 z m -49.2,-7.2 c -1.03,1.2 -1.47,1.6 -2.21,2.2 -1.78,1.4 -3.81,-0.2 -5.11,-1 -2.9,-1.7 -5.23,-0.6 -5.8,0.7 -0.57,1.3 0.1,2.9 1.64,2.7 2.21,-0.3 2.31,0.1 3.9,1.1 2.98,1.9 5.15,0.8 6.26,-0.1 0.92,-0.7 1.42,-1.3 1.92,-2.2 0.9,-1.7 0.2,-3 -0.3,-3.4 -0.1,-0.1 -0.2,-0.1 -0.3,0 z"></path>
+                <path style="fill:#c00"
+                      d="m 87.26,25.76 c 3.86,-0.47 10.35,-1.28 10.82,1.61 0.18,1.13 -1.98,2.32 -5.13,3.05 -0.34,0.1 -0.33,0.54 0,0.67 1.32,0.38 2.86,0.65 4.49,0.65 5.06,0.12 9.16,-1.71 9.26,-4.07 0.1,-2.36 -4,-4.39 -9.04,-4.49 -0.99,0 -1.98,0 -3.09,0.15 -3.02,0.3 -5.62,1.1 -7.42,1.98 -0.29,0.14 -0.28,0.45 0.11,0.45 z m -9.53,15.06 c 4.35,-0.32 4.79,-1.32 4.66,-2.39 -0.14,-1.25 -2.77,-2.71 -6.67,-2.71 -3.84,0 -6.6,0.46 -8.99,0.56 -2.39,0.1 -4.24,-1.69 -5.1,-2.76 -0.71,-0.88 -2.97,-1.73 -4.2,1.1 -1.24,2.86 1.07,5.93 2.97,6.33 0,0 3.17,5.89 5.57,3.33 1.71,-1.82 2.65,-2.8 11.76,-3.46 z m 43.87,28.83 c 2.9,-1.57 5.5,-3.63 6.8,-8.5 13.4,3.02 21.3,10 19.6,19.43 C 144.2,101.3 110.3,108.3 77.23,98.3 45.75,88.79 18.11,69.8 21.31,58.68 c 1.86,-6.48 12.13,-9.24 25.82,-7.76 -2.08,4.23 -1.92,9.21 7.14,14.75 11.07,6.29 29.79,11.66 34.85,11.14 1.89,-0.2 3.58,-1.13 1.89,-2.27 -1.7,-1.13 -3.21,-3.4 -4.16,-7.36 C 86.33,64.97 85.73,61.89 73.83,59.63 48.31,54.77 49.29,47.55 50.05,43.4 c 0,0 2.26,-10.19 3.21,-13.78 0.94,-3.59 3.38,-11.82 19.82,-8.12 9.5,2.14 14.62,-0.52 17.24,-1.19 7.1,-1.82 14.98,-0.57 19.28,3.9 4.5,4.63 10.7,18.9 13.7,29.57 1.5,5.42 1.1,8.02 0.3,9.85 -0.5,1.25 -0.8,2.05 -2.7,5.22 -0.3,0.56 -0.1,1.17 0.7,0.8 z"></path>
+            </g>
+
+        </svg>
+
+
+    </div>
+</div>
+
+<script>
+    var SLConfig = {
+        "deck": {
+            "id": 731729,
+            "slug": "title-textpresentation-title",
+            "title": "Title Textpresentation title",
+            "description": "",
+            "visibility": "self",
+            "published_at": null,
+            "sanitize_messages": null,
+            "thumbnail_url": "https://s3.amazonaws.com/media-p.slid.es/thumbnails/44b4bc4843d90e8daf7a427373eff844/thumb.jpg",
+            "view_count": 0,
+            "user": {
+                "id": 532535,
+                "username": "cescoffi",
+                "name": "Clement Escoffier",
+                "description": null,
+                "thumbnail_url": "https://www.gravatar.com/avatar/c93c049550f6416bfe853b80f9403ec2?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png",
+                "pro": true,
+                "team_id": 32,
+                "settings": {"id": 375936, "present_controls": true, "present_upsizing": true, "present_notes": true},
+                "enterprise": true,
+                "membership": {"role": "member", "manager": false, "activated": true}
+            },
+            "background_transition": "none",
+            "transition": "none",
+            "theme_id": 176,
+            "theme_font": "overpass2",
+            "theme_color": "no-color",
+            "auto_slide_interval": 0,
+            "comments_enabled": true,
+            "forking_enabled": false,
+            "rolling_links": false,
+            "center": false,
+            "should_loop": false,
+            "share_notes": null,
+            "slide_number": null,
+            "rtl": false,
+            "version": 2,
+            "collaborative": null,
+            "deck_user_editor_limit": 1,
+            "data_updated_at": 1465892853734,
+            "notes": {}
+        }
+    };
+    SLConfig.current_user = {
+        name: "Clement Escoffier",
+        username: "cescoffi",
+        pro: true
+    };
+</script>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script src="js/jquery-2.2.3.min.js"></script>
+<script src="js/sockjs-0.3.4.min.js"></script>
+<script src="js/vertx-eventbus.js"></script>
+<script src="interactions.js"></script>
+
+<script>
+    // Make Slides speaker notes available in the reveal.js speaker view
+    if (SLConfig.deck.notes) {
+        [].forEach.call(document.querySelectorAll('.reveal .slides section'), function (slide) {
+
+            var value = SLConfig.deck.notes[slide.getAttribute('data-id')];
+            if (value && typeof value === 'string') {
+                slide.setAttribute('data-notes', value);
+            }
+
+        });
+    }
+
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        mouseWheel: false,
+        showNotes: SLConfig.deck.share_notes,
+        slideNumber: SLConfig.deck.slide_number,
+
+        autoSlide: SLConfig.deck.auto_slide_interval || 0,
+        autoSlideStoppable: true,
+
+        rolling_links: SLConfig.deck.rolling_links || true,
+        center: SLConfig.deck.center || false,
+        loop: SLConfig.deck.should_loop || false,
+        rtl: SLConfig.deck.rtl || false,
+
+        transition: SLConfig.deck.transition,
+        backgroundTransition: SLConfig.deck.background_transition,
+
+        maxScale: 2,
+
+        dependencies: [
+            {
+                src: 'plugin/markdown/marked.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/markdown/markdown.js', condition: function () {
+                return !!document.querySelector('[data-markdown]');
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlighting();
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {
+                src: 'plugin/notes/notes.js', async: true, condition: function () {
+                return !!document.body.classList;
+            }
+            }
+        ]
+    });
+</script>
+
+
+<script id="theme-js-output" type="text/javascript">(function () {
+
+    var slidesInitInterval = setInterval(function () {
+        if (window.SL && window.SL.view) {
+            // If we're in the editor, wait for the Blocks controller
+            // to be initialized
+            if (SL.editor) {
+
+                if (SL.editor.controllers && SL.editor.controllers.Blocks && SL.editor.controllers.Blocks.textSaved) {
+                    SL.editor.controllers.Blocks.textSaved.add(function (element) {
+                        var html = element.html();
+                        html = html.replace(/(@RedHat | @redhat)/g, '@RedHatInc');
+                        html = html.replace('redhat.com', 'redhat.com');
+                        html = html.replace(/(Red Hat|red hat|RedHat|Red hat|Redhat|redHat|red Hat)/g, '<span class="name">Red Hat</span>');
+                        html = html.replace(/( redhat |redhat )/g, ' <span class="name">Red Hat</span> ');
+                        html = html.replace('REDHAT', '<span class="name">RED HAT</span>');
+                        html = html.replace('redhat<', '<span class="name">Red Hat</span><');
+                        html = html.replace('openshift', '<span class="name">OpenShift</span>');
+                        html = html.replace('<span class="name"><span class="name">Red Hat</span></span>', '<span class="name">Red Hat</span>');
+                        html = html.replace('redhat.com', 'redhat.com');
+                        html = html.replace('REDHAT.COM', 'REDHAT.COM');
+                        html = html.replace('@redhat', '@redhat');
+                        html = html.replace(/(@RedHatNews | @redhatnews)/g, '@RedHatNews');
+                        html = html.replace(/(@RedHat | @redhat)/g, '@RedHatInc');
+                        html = html.replace(/(RHEL-OSP|RHELOSP|Red Hat Enterprise Linux OpenStack Platform)/g, 'Red Hat OpenStack Platform');
+                        html = html.replace(/(openstack |openstack|open stack|openStack|Openstack)/g, 'OpenStack');
+                        html = html.replace('openstack', 'OpenStack');
+                        html = html.replace('openstack<', 'OpenStack<');
+
+                        element.html(html);
+                    });
+
+                    clearInterval(slidesInitInterval);
+                }
+
+            }
+            else {
+                clearInterval(slidesInitInterval);
+            }
+        }
+    }, 500);
+
+})();
+
+</script>
+
+<script>
+    var eb = new EventBus('/eventbus');
+
+    eb.onopen = function () {
+        console.log("Opened !");
+        // section 1 - distributed
+        eb.registerHandler('data.hello', function (error, message) {
+            console.log('received a message: ' + JSON.stringify(message));
+            $("#distributed-content").html("last message: " + message.body);
+        });
+
+        eb.registerHandler('eventbus-example', function (error, message) {
+            console.log("Got message on eventbus-example", error, message);
+            var content = $("#eventbus-bridge-content").prepend("<p>"
+                    + message.body.message + "</p>");
+        });
+
+        eb.registerHandler('data.random', function (error, message) {
+            handlePolyglotMessage(message.body);
+        });
+
+    };
+
+    setTimeout(function () {
+        if (eb.state == 3) {
+            console.log("Cannot connect to the event bus bridge");
+            $(".eventbus").html("Not connected to the event bus bridge");
+        }
+    }, 1000);
+
+
+    $("#request-reply").click(function () {
+        eb.send("eventbus-example-rr", "vert.x", function (err, res) {
+            console.log("reply", err, res);
+            var content = $("#request-reply-result");
+            if (err) {
+                content.prepend("<p>" + err.message + "</p>");
+            } else {
+                content.prepend("<p>" + res.body + "</p>");
+            }
+        });
+    });
+
+    $("#load-balancing-btn").click(function () {
+        eb.send("load-balancing", "any", function (err, res) {
+            var content = $("#load-balancing-result");
+            if (err) {
+                content.prepend("<p>" + err.message + "</p>");
+            } else {
+                content.prepend("<p>" + res.body + "</p>");
+            }
+        });
+    })
+
+</script>
+
+</body>
+
+</html>

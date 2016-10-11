@@ -1,6 +1,7 @@
 package io.vertx.example.polyglot;
 
 import io.vertx.core.Vertx;
+import io.vertx.lang.scala.*;
 import io.vertx.scala.*;
 
 /**

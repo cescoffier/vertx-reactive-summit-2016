@@ -10,7 +10,15 @@ public class MyHttpServer extends AbstractVerticle {
   @Override
   public void start() throws Exception {
     vertx.createHttpServer()
-        .requestHandler(req -> req.response().end("Hello from Java"))
-        .listen(8080);
+        .requestHandler(req -> req.response()
+            .putHeader("content-type", "text/html")
+            .end("<h1>Hello from Java</h1>"))
+        .listen(8080, ar -> {
+          if (ar.succeeded()) {
+            System.out.println("Server started on port " + ar.result().actualPort());
+          } else {
+            System.out.println("Unable to start server " + ar.cause().getMessage());
+          }
+        });
   }
 }

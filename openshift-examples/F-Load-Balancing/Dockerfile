@@ -12,4 +12,4 @@ RUN chmod 777 $APP_HOME
 
 WORKDIR $APP_HOME
 ENTRYPOINT ["sh", "-c"]
-CMD ["java -Djava.net.preferIPv4Stack=true -Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.Log4j2LogDelegateFactory -jar $JAR -cluster -cp ."]
+CMD ["java -Dvertx.jgroups.config=default-configs/default-jgroups-kubernetes.xml -Djava.net.preferIPv4Stack=true -Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.Log4j2LogDelegateFactory -jar $JAR -cluster -cp ."]

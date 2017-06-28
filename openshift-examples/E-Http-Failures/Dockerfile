@@ -11,4 +11,4 @@ RUN chmod 777 $APP_HOME
 
 WORKDIR $APP_HOME
 ENTRYPOINT ["sh", "-c"]
-CMD ["java -jar $JAR"]
+CMD ["exec java -jar $JAR"]

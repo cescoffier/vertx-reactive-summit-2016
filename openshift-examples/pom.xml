@@ -20,7 +20,7 @@
   </modules>
 
   <properties>
-    <vertx.version>3.4.0-SNAPSHOT</vertx.version>
+    <vertx.version>3.4.2</vertx.version>
 
     <main.class>io.vertx.core.Launcher</main.class>
     <!-- set by children project -->
@@ -55,13 +55,16 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-infinispan</artifactId>
-      <version>3.4.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.jgroups.kubernetes</groupId>
-      <artifactId>kubernetes</artifactId>
-      <version>0.9.0</version>
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-cloud</artifactId>
+      <version>9.0.0.Final</version>
       <exclusions>
+        <exclusion>
+          <groupId>org.jgroups</groupId>
+          <artifactId>jgroups</artifactId>
+        </exclusion>
         <exclusion>
           <artifactId>undertow-core</artifactId>
           <groupId>io.undertow</groupId>

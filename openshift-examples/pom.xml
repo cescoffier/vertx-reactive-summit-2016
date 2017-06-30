@@ -62,12 +62,19 @@
       <version>9.0.0.Final</version>
       <exclusions>
         <exclusion>
-          <groupId>org.jgroups</groupId>
-          <artifactId>jgroups</artifactId>
+          <artifactId>kubernetes</artifactId>
+          <groupId>org.jgroups.kubernetes</groupId>
         </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.jgroups.kubernetes</groupId>
+      <artifactId>jgroups-kubernetes</artifactId>
+      <version>1.0.0.Beta1</version>
+      <exclusions>
         <exclusion>
-          <artifactId>undertow-core</artifactId>
-          <groupId>io.undertow</groupId>
+          <artifactId>jgroups</artifactId>
+          <groupId>org.jgroups</groupId>
         </exclusion>
       </exclusions>
     </dependency>

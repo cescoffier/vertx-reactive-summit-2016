@@ -2,7 +2,7 @@ FROM openjdk:8u102-jre
 
 ENV JAR E-Http-Failures-1.0-SNAPSHOT-fat.jar
 ENV APP_HOME /usr/vertx
-ENV OPENSHIFT_KUBE_PING_NAMESPACE vertx-openshift-slides
+ENV KUBERNETES_NAMESPACE vertx-openshift-slides
 
 EXPOSE 8080
 

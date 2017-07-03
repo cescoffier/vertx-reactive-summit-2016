@@ -55,6 +55,12 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-infinispan</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>jgroups</artifactId>
+          <groupId>org.jgroups</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.infinispan</groupId>
@@ -71,12 +77,6 @@
       <groupId>org.jgroups.kubernetes</groupId>
       <artifactId>jgroups-kubernetes</artifactId>
       <version>1.0.0.Beta1</version>
-      <exclusions>
-        <exclusion>
-          <artifactId>jgroups</artifactId>
-          <groupId>org.jgroups</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
